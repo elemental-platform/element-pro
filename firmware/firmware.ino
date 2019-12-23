@@ -1,5 +1,5 @@
-// Element Pro Firmware v0.4
-// Modified: 07/10/2019
+// Element Pro Firmware v0.5
+// Modified: 12/22/2019
 
 // Developed by Akram Ali
 // github.com/akstudios
@@ -21,8 +21,7 @@
 #include <avr/wdt.h>
 
 // define node parameters
-//#define NODEID      109
-uint16_t NODEID =     999; // same as above, but supports 10bit addresses (up to 1023 node IDs)
+#define NODEID        999 // same as above, but supports 10bit addresses (up to 1023 node IDs)
 #define GATEWAYID     1
 #define NETWORKID     1
 #define FREQUENCY     RF69_915MHZ //Match this with the version of your Moteino! (others: RF69_433MHZ, RF69_868MHZ)
@@ -95,7 +94,7 @@ void setup()
   pinMode(10, OUTPUT); // Radio SS pin set as output
 
   Serial.begin(115200);
-  Serial.println("Setup");
+  //Serial.println("Setup");
 
   //pinMode(3, INPUT);
   pinMode(PM_SET, OUTPUT);
@@ -127,8 +126,8 @@ void setup()
   strip.begin(); // initialize neo pixels
   strip.show(); // Initialize all pixels to 'off'
 
-  Serial.println("Ready");
-  delay(10);
+  //Serial.println("Ready");
+  delay(1);
 }
 
 
@@ -171,7 +170,7 @@ void loop()
   readSensors();
 
   Serial.println(dataPacket);
-  delay(50);
+  delay(5);
 
   // send datapacket
   radio.sendWithRetry(GATEWAYID, dataPacket, strlen(dataPacket), 5, 100);  // send data, retry 5 times with delay of 100ms between each retry
@@ -256,7 +255,7 @@ void readSensors()
 
 
   // define character arrays for all variables
-  char _i[3];
+  //char _i[3];
   char _t[7];
   char _h[7];
   char _a[7];
@@ -271,7 +270,7 @@ void readSensors()
   char _p[7];
 
   // convert all flaoting point and integer variables into character arrays
-  dtostrf(NODEID, 1, 0, _i);
+  //dtostrf(NODEID, 1, 0, _i);
   dtostrf(temp, 3, 2, _t);  // this function converts float into char array. 3 is minimum width, 2 is decimal precision
   dtostrf(rh, 3, 2, _h);
   dtostrf(a, 3, 2, _a);
@@ -286,9 +285,10 @@ void readSensors()
   dataPacket[0] = 0;  // first value of dataPacket should be a 0
 
   // create datapacket by combining all character arrays into a large character array
-  strcat(dataPacket, "i:");
-  strcat(dataPacket, _i);
-  strcat(dataPacket, ",t:");
+  //strcat(dataPacket, "i:");
+  //strcat(dataPacket, _i);
+  //strcat(dataPacket, ",t:");
+  strcat(dataPacket, "t:");
   strcat(dataPacket, _t);
   strcat(dataPacket, ",h:");
   strcat(dataPacket, _h);
@@ -306,7 +306,7 @@ void readSensors()
   strcat(dataPacket, _z);
   strcat(dataPacket, ",v:");
   strcat(dataPacket, _v);
-  delay(50);
+  delay(5);
 }
 
 
